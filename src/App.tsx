@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box } from "@chakra-ui/react";
+import { useState } from "react";
+import { Dashboard } from "./components/Dashboard";
+import { Header } from "./components/Header";
+import { TransactionModal } from "./components/TransactionModal";
+import { TransactionsProvider } from "./hooks/useTransactions";
 
-function App() {
+export function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function handleOpenNewTransactionModal() {
+    setIsModalOpen(true);
+  }
+  function handleCloseNewTransactionModal() {
+    setIsModalOpen(false);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TransactionsProvider>
+      <Box
+        w="100vw"
+        h="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="flex-start"
+        flexDir="column"
+        bgColor="gray.100"
+      >
+        <Header onNewTransactionOpen={handleOpenNewTransactionModal} />
+        <TransactionModal
+          isNewTransactionOpen={isModalOpen}
+          onNewTransactionClose={handleCloseNewTransactionModal}
+        />
+        <Dashboard />
+      </Box>
+    </TransactionsProvider>
   );
 }
-
-export default App;
